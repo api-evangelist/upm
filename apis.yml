@@ -1,0 +1,82 @@
+---
+aid: upm
+name: Universiti Putra Malaysia
+description: >-
+  Universiti Putra Malaysia (UPM) is a Malaysian public research university in
+  Serdang, Selangor, formerly the Universiti Pertanian Malaysia, and ranked #148
+  in the QS World University Rankings 2025. UPM has no central, publicly
+  documented developer portal, but it does operate machine-readable scholarly and
+  identity infrastructure: an EPrints-based institutional repository (PSAS IR)
+  that exposes a standards-based OAI-PMH 2.0 metadata harvesting interface, and a
+  Shibboleth SAML 2.0 identity provider used for federated single sign-on.
+  Application access for students and staff (study portal, Putra portal, SIMS) is
+  gated behind UPM-ID SSO and is not openly documented.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/upm/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - Open Access
+  - Institutional Repository
+  - Identity
+  - Malaysia
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: upm:oai-pmh
+    name: PSAS Institutional Repository OAI-PMH
+    description: >-
+      Standards-based OAI-PMH 2.0 metadata harvesting interface for the
+      Universiti Putra Malaysia Institutional Repository (PSAS IR), running on
+      EPrints. Supports the Identify, ListMetadataFormats, ListRecords,
+      ListIdentifiers, ListSets and GetRecord verbs, and exposes records in
+      oai_dc, didl, mets, oai_bibl, rdf and uketd_dc metadata formats. Confirmed
+      live (HTTP 200) returning valid OAI-PMH XML.
+    humanURL: http://psasir.upm.edu.my/information.html
+    baseURL: http://psasir.upm.edu.my/cgi/oai2
+    tags: [ OAI-PMH, Repository, EPrints, Open Access, Metadata, Research ]
+    properties:
+      - type: Documentation
+        url: http://psasir.upm.edu.my/information.html
+  - aid: upm:saml-idp
+    name: UPM Shibboleth SAML 2.0 Identity Provider
+    description: >-
+      Federated single sign-on identity provider for Universiti Putra Malaysia,
+      built on Shibboleth and publishing SAML 2.0 / SAML 1.1 metadata at its
+      entityID. Used for research and education community federation
+      (scope upm.edu.my). Confirmed live (HTTP 200) returning valid SAML
+      EntityDescriptor metadata.
+    humanURL: https://idf.upm.edu.my/idp/shibboleth
+    baseURL: https://idf.upm.edu.my/idp/shibboleth
+    tags: [ Identity, SSO, SAML, Shibboleth, Authentication, Federation ]
+    properties:
+      - type: Documentation
+        url: https://idf.upm.edu.my/idp/shibboleth
+common:
+  - type: Website
+    url: https://upm.edu.my/
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/universiti-putra-malaysia/
+  - type: Library
+    url: https://lib.upm.edu.my/
+  - type: Repository
+    url: http://psasir.upm.edu.my/
+  - type: Authentication
+    url: https://idf.upm.edu.my/idp/shibboleth
+  - type: Plans
+    url: plans/upm-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/upm-rate-limits.yml
+  - type: FinOps
+    url: finops/upm-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

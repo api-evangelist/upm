@@ -1,0 +1,48 @@
+---
+name: Universiti Putra Malaysia
+description: Universiti Putra Malaysia public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/upm/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      UPM has no central, publicly documented developer portal or open-data API.
+      Two real, machine-readable interfaces were verified live: the PSAS
+      Institutional Repository OAI-PMH 2.0 endpoint (EPrints), which returned a
+      valid Identify response and six metadata formats (oai_dc, didl, mets,
+      oai_bibl, rdf, uketd_dc), and the Shibboleth SAML 2.0 identity provider,
+      which returned a valid SAML EntityDescriptor scoped to upm.edu.my.
+      Student/staff systems (study portal, SIMS, Putra MOOC) are gated behind
+      UPM-ID SSO or resolve to internal hosts and are not openly documented. No
+      official UPM GitHub organization was confirmed. No endpoints were
+      fabricated.
+    endpoints:
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=Identify
+        status: 200
+        note: Live OAI-PMH 2.0 Identify response, EPrints repository.
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=ListMetadataFormats
+        status: 200
+        note: Six metadata formats returned (oai_dc, didl, mets, oai_bibl, rdf, uketd_dc).
+      - url: http://psasir.upm.edu.my/
+        status: 200
+        note: PSAS Institutional Repository home (HTTP-only).
+      - url: https://idf.upm.edu.my/idp/shibboleth
+        status: 200
+        note: Valid Shibboleth SAML 2.0 IdP metadata, scope upm.edu.my.
+      - url: https://upm.edu.my/
+        status: 200
+        note: Official university website.
+      - url: https://lib.upm.edu.my/
+        status: 200
+        note: Sultan Abdul Samad Library; hosts the institutional repository.
+      - url: https://study.upm.edu.my/login
+        status: 200
+        note: Student information login; gated behind UPM-ID SSO, no public API.
+      - url: https://putramooc.upm.edu.my/
+        status: 303
+        note: Redirects to an internal host (172.16.243.180); not publicly usable.
+      - url: https://www.linkedin.com/school/universiti-putra-malaysia/
+        status: 999
+        note: LinkedIn school page; 999 is a bot-block, page exists in browser.
