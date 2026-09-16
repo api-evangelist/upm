@@ -79,145 +79,185 @@ x-enrichment:
     misattribution problem did not touch. One correction went the other way: a claimed
     vulnerability-disclosure page was withdrawn as a soft-404.
 apis:
-  - aid: upm:psasir-oai-pmh
-    name: PSASIR Institutional Repository — OAI-PMH 2.0
-    x-operator: institution
-    x-operator-basis: >-
-      psasir.upm.edu.my is under UPM's own registrable domain and resolves to 119.40.117.86 inside
-      UPMNET (119.40.112.0/20, org-name UNIVERSITI PUTRA MALAYSIA). EPrints is open-source software
-      UPM self-hosts; no vendor identity appears in the endpoint's own Identify response.
-    description: >-
-      OAI-PMH 2.0 metadata harvesting for the Universiti Putra Malaysia Institutional Repository,
-      running EPrints 3.3.16. Identify, ListMetadataFormats, ListSets, ListIdentifiers, ListRecords
-      and GetRecord all verified live on 2026-09-01. Six metadata formats — oai_dc, didl, mets,
-      oai_bibl, rdf, uketd_dc — with resumptionToken flow control at a page size of 100 and a
-      24-hour token lifetime. Earliest datestamp 2008-12-01. Protocol errors return HTTP 200 with
-      an OAI-PMH error element.
-    humanURL: http://psasir.upm.edu.my/information.html
-    baseURL: http://psasir.upm.edu.my/cgi/oai2
-    tags: [ OAI-PMH, Repository, EPrints, Open Access, Metadata, Research ]
-    properties:
-      - type: OpenAPI
-        url: openapi/upm-psasir-oai-pmh-openapi.yml
-      - type: Documentation
-        url: http://psasir.upm.edu.my/information.html
-      - type: ResearchRepository
-        url: http://psasir.upm.edu.my/
-  - aid: upm:psasir-eprints-rest
-    name: PSASIR EPrints REST, Export and OpenSearch
-    x-operator: institution
-    x-operator-basis: Same host, same network allocation and same self-hosted EPrints deployment as the OAI-PMH surface.
-    description: >-
-      Unauthenticated read interfaces the repository serves alongside OAI-PMH, all verified live on
-      2026-09-01: an EPrints REST dataset browser at /rest/ with per-item XML at
-      /rest/eprint/{id}.xml, a per-item export interface at /cgi/export/eprint/{id}/{format}/ that
-      renders JSON among other plugins, and a search interface at /cgi/search whose serialization is
-      selected with an `output` parameter. The repository advertises twenty output representations in
-      its own OpenSearch 1.1 description document. Two of these interfaces return unbounded
-      responses and should not be used for bulk work in preference to OAI-PMH.
-    humanURL: http://psasir.upm.edu.my/cgi/opensearchdescription
-    baseURL: http://psasir.upm.edu.my
-    tags: [ REST, EPrints, OpenSearch, Repository, Export, JSON, Research ]
-    properties:
-      - type: OpenAPI
-        url: openapi/upm-psasir-eprints-rest-openapi.yml
-      - type: JSONSchema
-        url: json-schema/upm-eprints-record-schema.json
-      - type: Examples
-        url: examples/upm-examples.yml
-      - type: Errors
-        url: errors/upm-errors.yml
-  - aid: upm:myagric-oai-pmh
-    name: MyAgric — Malaysian Agricultural Repository OAI-PMH 2.0
-    x-operator: institution
-    x-operator-basis: >-
-      myagric.upm.edu.my is under UPM's own registrable domain and resolves to 119.40.117.127, also
-      inside UPMNET. Same administrator contact as PSASIR, different repository identifier and
-      different collection — a second UPM-operated repository, not a duplicate listing.
-    description: >-
-      OAI-PMH 2.0 metadata harvesting for MyAgric, the Malaysian Agricultural Repository, a
-      national-scope agricultural collection UPM hosts and operates on a second EPrints 3.3.16
-      deployment. Identify, ListIdentifiers and GetRecord verified live on 2026-09-01. Earliest
-      datestamp 2017-07-04. An EPrints REST interface is present on this host as well.
-    humanURL: http://myagric.upm.edu.my/
-    baseURL: http://myagric.upm.edu.my/cgi/oai2
-    tags: [ OAI-PMH, Repository, EPrints, Agriculture, Open Access, Metadata, Malaysia ]
-    properties:
-      - type: OpenAPI
-        url: openapi/upm-myagric-oai-pmh-openapi.yml
-      - type: ResearchRepository
-        url: http://myagric.upm.edu.my/
-  - aid: upm:saml-idp
-    name: UPM Shibboleth SAML 2.0 Identity Provider
-    x-operator: institution
-    x-operator-basis: >-
-      entityID, all SingleSignOnService and SingleLogoutService locations, the shibmd:Scope and the
-      TLS certificate subject are all UPM's own, with no CNAME to a managed identity platform —
-      unlike the AAF Rapid IdP and OpenAthens patterns found elsewhere in this cohort. The host does
-      resolve outside UPM's campus allocation, to a Malaysian commercial hosting provider; that is
-      recorded in identity-federation/upm-identity-federation.yml and does not change the verdict.
-    description: >-
-      UPM's own Shibboleth identity provider, publishing conforming SAML 2.0 and SAML 1.1 metadata
-      at its entityID (HTTP 200, application/xml, verified 2026-09-01). Asserts the scope
-      upm.edu.my, carries HTTP-POST, HTTP-Redirect and HTTP-POST-SimpleSign SSO bindings, matching
-      SLO bindings, signing and encryption keys, and SHA-256 signing and digest declarations. This
-      is the authentication system for UPM-ID, published as machine-readable metadata.
-    humanURL: https://idf.upm.edu.my/idp/shibboleth
-    baseURL: https://idf.upm.edu.my/idp/shibboleth
-    tags: [ Identity, SSO, SAML, Shibboleth, Authentication, Federation ]
-    properties:
-      - type: IdentityFederation
-        url: identity-federation/upm-identity-federation.yml
-      - type: Authentication
-        url: authentication/upm-authentication.yml
-      - type: Documentation
-        url: https://idf.upm.edu.my/idp/shibboleth
-  - aid: upm:edugain-sifulan
-    name: eduGAIN / SIFULAN federation membership
-    x-operator: federation
-    x-operator-basis: >-
-      A federation is shared by definition and the identity provider behind it is UPM's own. The
-      membership is recorded, not the federation's contract. Evidenced from eduGAIN's own technical
-      database because sifulan.my is behind a Cloudflare bot challenge (HTTP 403).
-    description: >-
-      Universiti Putra Malaysia's identity provider is registered in eduGAIN, the global identity
-      interfederation, through SIFULAN — the Malaysian Access Federation — as eduGAIN entity 672307,
-      registration authority https://sifulan.my, federation code SIFULAN, scope upm.edu.my, first
-      seen 2020-06-19. Confirmed from the eduGAIN technical database API on 2026-09-01 (HTTP 200).
-    humanURL: https://technical.edugain.org/entities?entity=672307
-    tags: [ Identity Federation, eduGAIN, SIFULAN, SAML, Shibboleth, Malaysia ]
-    properties:
-      - type: IdentityFederation
-        url: identity-federation/upm-identity-federation.yml
-  - aid: upm:crossref-member
-    name: Crossref membership — DOI prefix 10.47836
-    x-operator: registry
-    x-operator-basis: >-
-      An identifier registry UPM is registered in. The membership is a fact about UPM; the registry's
-      contract belongs to Crossref and is not saved here.
-    description: >-
-      Universiti Putra Malaysia is a Crossref member in its own right, member id 27687, holding DOI
-      prefix 10.47836 with 5,871 registered DOIs (3,105 current, 2,766 backfile) as of 2026-09-01.
-      The prefix carries UPM Press output including the Pertanika journal series and the Journal of
-      Language and Communication. Confirmed live against the Crossref REST API on 2026-09-01.
-    humanURL: https://api.crossref.org/members/27687
-    tags: [ Crossref, DOI, Registry, Scholarly Publishing, Persistent Identifiers ]
-    properties:
-      - type: Conformance
-        url: conformance/upm-education-standards-conformance.yml
-  - aid: upm:ror
-    name: ROR organization record
-    x-operator: registry
-    x-operator-basis: >-
-      The Research Organization Registry is an identifier registry UPM is registered in. Membership
-      recorded; ROR's contract is not saved here.
-    description: >-
-      Universiti Putra Malaysia holds ROR identifier https://ror.org/02e91jd64, cross-walked in the
-      ROR record to GRID grid.11142.37, ISNI 0000 0001 2231 800X, Wikidata Q1458579 and five
-      Crossref Funder Registry identifiers with 501100004530 preferred. Confirmed live against the
-      ROR REST API on 2026-09-01.
-    humanURL: https://ror.org/02e91jd64
-    tags: [ ROR, Registry, Persistent Identifiers, Research ]
+- aid: upm:saml-idp
+  name: UPM Shibboleth SAML 2.0 Identity Provider
+  x-operator: institution
+  x-operator-basis: >-
+    entityID, all SingleSignOnService and SingleLogoutService locations, the shibmd:Scope and the TLS
+    certificate subject are all UPM's own, with no CNAME to a managed identity platform — unlike the AAF
+    Rapid IdP and OpenAthens patterns found elsewhere in this cohort. The host does resolve outside UPM's
+    campus allocation, to a Malaysian commercial hosting provider; that is recorded in identity-federation/upm-identity-federation.yml
+    and does not change the verdict.
+  description: >-
+    UPM's own Shibboleth identity provider, publishing conforming SAML 2.0 and SAML 1.1 metadata at its
+    entityID (HTTP 200, application/xml, verified 2026-09-01). Asserts the scope upm.edu.my, carries HTTP-POST,
+    HTTP-Redirect and HTTP-POST-SimpleSign SSO bindings, matching SLO bindings, signing and encryption
+    keys, and SHA-256 signing and digest declarations. This is the authentication system for UPM-ID, published
+    as machine-readable metadata.
+  humanURL: https://idf.upm.edu.my/idp/shibboleth
+  baseURL: https://idf.upm.edu.my/idp/shibboleth
+  tags:
+  - Identity
+  - SSO
+  - SAML
+  - Shibboleth
+  - Authentication
+  - Federation
+  properties:
+  - type: IdentityFederation
+    url: identity-federation/upm-identity-federation.yml
+  - type: Authentication
+    url: authentication/upm-authentication.yml
+  - type: Documentation
+    url: https://idf.upm.edu.my/idp/shibboleth
+- aid: upm:edugain-sifulan
+  name: eduGAIN / SIFULAN federation membership
+  x-operator: federation
+  x-operator-basis: >-
+    A federation is shared by definition and the identity provider behind it is UPM's own. The membership
+    is recorded, not the federation's contract. Evidenced from eduGAIN's own technical database because
+    sifulan.my is behind a Cloudflare bot challenge (HTTP 403).
+  description: >-
+    Universiti Putra Malaysia's identity provider is registered in eduGAIN, the global identity interfederation,
+    through SIFULAN — the Malaysian Access Federation — as eduGAIN entity 672307, registration authority
+    https://sifulan.my, federation code SIFULAN, scope upm.edu.my, first seen 2020-06-19. Confirmed from
+    the eduGAIN technical database API on 2026-09-01 (HTTP 200).
+  humanURL: https://technical.edugain.org/entities?entity=672307
+  tags:
+  - Identity Federation
+  - eduGAIN
+  - SIFULAN
+  - SAML
+  - Shibboleth
+  - Malaysia
+  properties:
+  - type: IdentityFederation
+    url: identity-federation/upm-identity-federation.yml
+- aid: upm:crossref-member
+  name: Crossref membership — DOI prefix 10.47836
+  x-operator: registry
+  x-operator-basis: >-
+    An identifier registry UPM is registered in. The membership is a fact about UPM; the registry's contract
+    belongs to Crossref and is not saved here.
+  description: >-
+    Universiti Putra Malaysia is a Crossref member in its own right, member id 27687, holding DOI prefix
+    10.47836 with 5,871 registered DOIs (3,105 current, 2,766 backfile) as of 2026-09-01. The prefix carries
+    UPM Press output including the Pertanika journal series and the Journal of Language and Communication.
+    Confirmed live against the Crossref REST API on 2026-09-01.
+  humanURL: https://api.crossref.org/members/27687
+  tags:
+  - Crossref
+  - DOI
+  - Registry
+  - Scholarly Publishing
+  - Persistent Identifiers
+  properties:
+  - type: Conformance
+    url: conformance/upm-education-standards-conformance.yml
+- aid: upm:ror
+  name: ROR organization record
+  x-operator: registry
+  x-operator-basis: >-
+    The Research Organization Registry is an identifier registry UPM is registered in. Membership recorded;
+    ROR's contract is not saved here.
+  description: >-
+    Universiti Putra Malaysia holds ROR identifier https://ror.org/02e91jd64, cross-walked in the ROR
+    record to GRID grid.11142.37, ISNI 0000 0001 2231 800X, Wikidata Q1458579 and five Crossref Funder
+    Registry identifiers with 501100004530 preferred. Confirmed live against the ROR REST API on 2026-09-01.
+  humanURL: https://ror.org/02e91jd64
+  tags:
+  - ROR
+  - Registry
+  - Persistent Identifiers
+  - Research
+- aid: upm:upm-export-api
+  name: Universiti Putra Malaysia Export API
+  description: Per-item export plugins.
+  humanURL: http://psasir.upm.edu.my/information.html
+  baseURL: http://psasir.upm.edu.my/cgi/oai2
+  tags:
+  - Export
+  properties:
+  - type: OpenAPI
+    url: openapi/upm-export-api-openapi.yml
+  - type: Documentation
+    url: http://psasir.upm.edu.my/information.html
+  - type: ResearchRepository
+    url: http://psasir.upm.edu.my/
+  - type: JSONSchema
+    url: json-schema/upm-eprints-record-schema.json
+  - type: Examples
+    url: examples/upm-examples.yml
+  - type: Errors
+    url: errors/upm-errors.yml
+  - type: ResearchRepository
+    url: http://myagric.upm.edu.my/
+- aid: upm:upm-oai-pmh-api
+  name: Universiti Putra Malaysia OAI PMH API
+  description: OAI-PMH 2.0 harvesting verbs.
+  humanURL: http://psasir.upm.edu.my/information.html
+  baseURL: http://psasir.upm.edu.my/cgi/oai2
+  tags:
+  - OAI-PMH
+  properties:
+  - type: OpenAPI
+    url: openapi/upm-oai-pmh-api-openapi.yml
+  - type: Documentation
+    url: http://psasir.upm.edu.my/information.html
+  - type: ResearchRepository
+    url: http://psasir.upm.edu.my/
+  - type: JSONSchema
+    url: json-schema/upm-eprints-record-schema.json
+  - type: Examples
+    url: examples/upm-examples.yml
+  - type: Errors
+    url: errors/upm-errors.yml
+  - type: ResearchRepository
+    url: http://myagric.upm.edu.my/
+- aid: upm:upm-rest-api
+  name: Universiti Putra Malaysia REST API
+  description: EPrints REST dataset browser.
+  humanURL: http://psasir.upm.edu.my/information.html
+  baseURL: http://psasir.upm.edu.my/cgi/oai2
+  tags:
+  - REST
+  properties:
+  - type: OpenAPI
+    url: openapi/upm-rest-api-openapi.yml
+  - type: Documentation
+    url: http://psasir.upm.edu.my/information.html
+  - type: ResearchRepository
+    url: http://psasir.upm.edu.my/
+  - type: JSONSchema
+    url: json-schema/upm-eprints-record-schema.json
+  - type: Examples
+    url: examples/upm-examples.yml
+  - type: Errors
+    url: errors/upm-errors.yml
+  - type: ResearchRepository
+    url: http://myagric.upm.edu.my/
+- aid: upm:upm-search-api
+  name: Universiti Putra Malaysia Search API
+  description: Search with selectable output format.
+  humanURL: http://psasir.upm.edu.my/information.html
+  baseURL: http://psasir.upm.edu.my/cgi/oai2
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/upm-search-api-openapi.yml
+  - type: Documentation
+    url: http://psasir.upm.edu.my/information.html
+  - type: ResearchRepository
+    url: http://psasir.upm.edu.my/
+  - type: JSONSchema
+    url: json-schema/upm-eprints-record-schema.json
+  - type: Examples
+    url: examples/upm-examples.yml
+  - type: Errors
+    url: errors/upm-errors.yml
+  - type: ResearchRepository
+    url: http://myagric.upm.edu.my/
 common:
   - type: Website
     url: https://upm.edu.my/
