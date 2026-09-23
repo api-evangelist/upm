@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi" xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude" entityID="https://idf.upm.edu.my/idp/shibboleth">
+    <md:Extensions xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport">
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    </md:Extensions>
+    <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
+        <md:Extensions>
+            <shibmd:Scope regexp="false">upm.edu.my</shibmd:Scope>
+            <mdui:UIInfo>
+                <mdui:DisplayName xml:lang="en">Universiti Putra Malaysia</mdui:DisplayName>
+                <mdui:Description xml:lang="en">Research and Education Communities</mdui:Description>
+                <mdui:InformationURL xml:lang="en">https://www.upm.edu.my</mdui:InformationURL>
+                <mdui:Logo width="117" height="50" xml:lang="en">https://idf.upm.edu.my/idp/images/logo.png</mdui:Logo>
+            </mdui:UIInfo>
+        </md:Extensions>
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIEIzCCAougAwIBAgIUWPDGuGeXVVA422t8jVCPiqeplokwDQYJKoZIhvcNAQEL
+                        BQAwGTEXMBUGA1UEAwwOaWRmLnVwbS5lZHUubXkwHhcNMjMxMDE4MDkzNzQxWhcN
+                        NDMxMDE4MDkzNzQxWjAZMRcwFQYDVQQDDA5pZGYudXBtLmVkdS5teTCCAaIwDQYJ
+                        KoZIhvcNAQEBBQADggGPADCCAYoCggGBAK9l3fmSTTgVrlDKH4ytkQ9ATCB2qMH/
+                        zmDD7bCJqOBa1A1hYwv4tBIfkkKbJXn+McUkfHCVFeBV2BrtN4Tt4CabGPSL7DfF
+                        YFhyx8IV0uwkQtKb/u7f5eKdaodfUAUNbiiretdkHzIHIESI7smlQKJQCGw/ZvZR
+                        z+IeXA6NWz5SlvOUJGfi6dV6pxlOXltZketJ7ufm9ZYsggLnY7mnJxOTG2RsLXzB
+                        SNbcjlTiyi9Il1zeNL6RfZNYrR8j9gac9tsHxQkoCr9VUb65CaGAMemZ9QBv6MNt
+                        5dEXHtmleoklhizomRILlsYASH5RbiCbaLHAxLr0oCFqCYFdHmLHvIl3/BYDipOJ
+                        v8Zqh/xlh7KqLr84GJJ6v2fcamb9F4pMtUxlGFeneBtcelniCwVP10VpwvAMJnbu
+                        6QQt6wP3B19HpGAdcGwzMytG8jNalaPAXPkbQzq+SDqrYONGoyqS54e6e0KOXenM
+                        kI9YvmumghzWX9aITxZWclfK7qsXKl09GQIDAQABo2MwYTAdBgNVHQ4EFgQUs/s1
+                        KdK+dP7GUCmrEjDCqpMjc30wQAYDVR0RBDkwN4IOaWRmLnVwbS5lZHUubXmGJWh0
+                        dHBzOi8vaWRmLnVwbS5lZHUubXkvaWRwL3NoaWJib2xldGgwDQYJKoZIhvcNAQEL
+                        BQADggGBAEeUnx2lfxw1EMNF2OrgST/TnIbeTN7HQUVtby3KWxEx6ViSU0hbi7Mk
+                        9TUMhbNrG0o+47slMC33/n8/VojEkyZXfjDYhkhlyUJTOeCG+Ua3Ln9QAlAqbbvH
+                        igws16EeisyhtrU4LbG+nUM/KgjZRdk698fOnBpvWJZ1vKsXbsr/PRW7ryJlGYjz
+                        meG10XZAAlZViw1FM2XZK4lz2WYmHr3kB0SRJ6lH/7lvWdAGdRIJCbSwkeKcT8ml
+                        3xHQqkW/dhYYhUVdubUQ9ToikX4lhKHXujEkHEw+jSgWAa6UP1Rx458G7fa+gq0r
+                        PwdMxPGneZ6AR7DjMrwZUISSJfAtt5QxvD43Toe6WZTXVxW15REFqoHZ5R9pAYXD
+                        YS9AGBJjWWDy5pXtN0AIa6jTT5MCuetRVGjEkAAsCVo6NRUOTOw3w0eWON999rEu
+                        fDJfZKca4yjwD3ybwIoLNqzSpLoseDpWwd4mFS0/d2Dlkv/90Z2fLd81MbF3u85P
+                        Wh1g/C/zFg==
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIEIzCCAougAwIBAgIUaBqMPcEP3ImZYAEQMA46U+jIH78wDQYJKoZIhvcNAQEL
+                        BQAwGTEXMBUGA1UEAwwOaWRmLnVwbS5lZHUubXkwHhcNMjMxMDE4MDkzNzQyWhcN
+                        NDMxMDE4MDkzNzQyWjAZMRcwFQYDVQQDDA5pZGYudXBtLmVkdS5teTCCAaIwDQYJ
+                        KoZIhvcNAQEBBQADggGPADCCAYoCggGBALoEBF0P+SBo8V8tV+85gnU92dSllFxB
+                        tzjM5LP1u01cj3nlWrSWeLBA2SanjEaQy+HDyzzXmRlNga7VPT0H5hBxPu1LILC4
+                        lwBr96cZnqEiDqzM/b2rTxrWtyMwB3OYjowhID6ehM3dwpAEaDAP8VmoZJdtXZkl
+                        wK8O/mUvbmycZ7maqeGpRDqoDftwsUnClMYLo/wtu2+cezb0um2tGSANbWgL1blx
+                        +n489naNPDWiC4Q6v9LhnHNMJL2bo12Z9vaXdLkniQJCPnLQESSZtKYBDuN+T2bw
+                        SSsabN7wHiWG/pxXNPCTc5ZAMVrq3iJtjTEX/yG9IaNVyu+H6bdtjmW4WePlFuS1
+                        V6uC/r4MWVFDwmIH5S5AeFe9iYGMhIU8PWvOgDx58qZMTi46MOdUfdAcYObZ2Rde
+                        RSH1xJL1BrFVl8lDavMot5EkiwGRcGcWL5Q0O90rTICdDmWZfeGtQw+wVpCZSX+o
+                        QABEWnjSNRLI8/6vmX46nWBm1TZUaOUdrQIDAQABo2MwYTAdBgNVHQ4EFgQU/JvQ
+                        KUmRcEBE7zsJqrqTwZrRI2gwQAYDVR0RBDkwN4IOaWRmLnVwbS5lZHUubXmGJWh0
+                        dHBzOi8vaWRmLnVwbS5lZHUubXkvaWRwL3NoaWJib2xldGgwDQYJKoZIhvcNAQEL
+                        BQADggGBADUvVBnahb8VWl89G9vraoo86+ynxpNOb1fGbYc/6I2x90yr6RhwfmMW
+                        UtcJSQN+n9174lPAftvgT/BnrhabnHY94zW9SgkRHbMY/EYp6tdvqt4C4q7HD7IF
+                        REty0xjgxTGY7bprL8ubNB+O0fQbEgHypLMh+tWlilvZaH3NArsg7TnMwmLgLyhh
+                        5SD/HizC8175GWw3+qhf2U/qav1sZ+WkESm3Uy+qbNuNj2MdlK0eVHnTYe0IIx9N
+                        5wyPX9xYVxZVWv6ne69eBW/dua+losX4QwomIHVLIzDIwOR58QodHVF+UzM7O56w
+                        rY3X6O3BIG0m6LSvGUcTr2zfQ4eMlbqWmmxXE1DxDekgq3wvd3n32nxqzv9p0YSU
+                        +3G3qkrPtgzq74QfRC/HQgdX2EAG6ruc37HAOhL1ivFEMggUt67DSy/HBnKisWRk
+                        mkJfS/lheHTUa/sSmmKaZZr/2TiYqdAGT/MzANYXicE4Jo1NjCKUSR8n9MCnS4K0
+                        ZhyppT7kLQ==
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idf.upm.edu.my/idp/profile/SAML2/POST/SLO"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idf.upm.edu.my/idp/profile/SAML2/Redirect/SLO"/>
+        <md:NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://idf.upm.edu.my/idp/profile/SAML2/POST-SimpleSign/SSO"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idf.upm.edu.my/idp/profile/SAML2/POST/SSO"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idf.upm.edu.my/idp/profile/SAML2/Redirect/SSO"/>
+        <md:SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idf.upm.edu.my/idp/profile/Shibboleth/SSO"/>
+    </md:IDPSSODescriptor>
+    <md:Organization>
+        <md:OrganizationName xml:lang="en">Universiti Putra Malaysia</md:OrganizationName>
+        <md:OrganizationDisplayName xml:lang="en">Universiti Putra Malaysia</md:OrganizationDisplayName>
+        <md:OrganizationURL xml:lang="en">https://www.upm.edu.my</md:OrganizationURL>
+    </md:Organization>
+    <md:ContactPerson contactType="support">
+        <md:GivenName>upm</md:GivenName>
+        <md:SurName>Support</md:SurName>
+        <md:EmailAddress>mailto:idec_helpdesk@upm.edu.my</md:EmailAddress>
+    </md:ContactPerson>
+</md:EntityDescriptor>

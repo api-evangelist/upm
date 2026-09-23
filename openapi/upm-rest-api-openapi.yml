@@ -1,0 +1,77 @@
+openapi: 3.2.0
+info:
+  title: UPM PSASIR — EPrints , export and OpenSearch interfaces…
+  version: 3.3.16
+  summary: Read-only machine-readable item, search and export interfaces of the UPM Institutional Repository.
+  description: 'Beyond OAI-PMH, PSASIR (Universiti Putra Malaysia Institutional Repository, EPrints 3.3.16) serves three further unauthenticated machine-readable interfaces, all observed live on 2026-09-01: an EPrints REST dataset browser at /rest/ exposing the eprint, user and subject datasets with per-item XML at /rest/eprint/{id}.xml; a per-item export interface at /cgi/export/eprint/{id}/{format}/{filename} that renders a single record into any installed export plugin, including JSON; and a search…'
+  contact:
+    name: PSASIR repository administrator
+    email: muizzudin@upm.edu.my
+    url: http://psasir.upm.edu.my/information.html
+  x-operator: institution
+  x-operator-basis: Host is under upm.edu.my and resolves into UPMNET (119.40.117.86, org-name UNIVERSITI PUTRA MALAYSIA). Self-hosted open-source EPrints, not a hosted vendor tenancy.
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source: Live probes on 2026-09-01 of http://psasir.upm.edu.my/rest/ (200), /rest/eprint/ (200, 9.9 MB index), /rest/eprint/813.xml (200), /cgi/export/eprint/813/JSON/psasir-eprint-813.js (200, application/json), /cgi/search?q=rice&output=JSON (200, streaming) and /cgi/opensearchdescription (200, application/opensearchdescription+xml), which is the source of the enumerated output formats.
+servers:
+- url: http://psasir.upm.edu.my
+  description: PSASIR (HTTP only — the host does not serve HTTPS)
+tags:
+- name: Rest
+  description: EPrints REST dataset browser.
+paths:
+  /rest/:
+    get:
+      tags:
+      - Rest
+      operationId: listDatasets
+      summary: List the REST-exposed datasets
+      description: Returns an XHTML index of the datasets exposed over REST — eprint, user, subject.
+      responses:
+        '200':
+          description: XHTML dataset index.
+          content:
+            text/html:
+              schema:
+                type: string
+  /rest/eprint/:
+    get:
+      tags:
+      - Rest
+      operationId: listEprints
+      summary: List every eprint id in the repository
+      description: Returns an XHTML index linking every archived eprint id and its `.xml` representation. Observed at 9,899,179 bytes on 2026-09-01 — this is an unbounded listing with no paging parameter; prefer OAI-PMH ListIdentifiers for incremental harvesting.
+      responses:
+        '200':
+          description: XHTML index of eprint ids.
+          content:
+            text/html:
+              schema:
+                type: string
+  /rest/eprint/{eprintId}.xml:
+    get:
+      tags:
+      - Rest
+      operationId: getEprintXml
+      summary: Get one eprint as EPrints XML
+      parameters:
+      - name: eprintId
+        in: path
+        required: true
+        schema:
+          type: integer
+          examples:
+          - 813
+      responses:
+        '200':
+          description: An `<eprints>` document in the http://eprints.org/ep2/data/2.0 namespace.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+              examples:
+                eprint813:
+                  summary: eprint 813 (observed 2026-09-01)
+                  externalValue: ../examples/upm-psasir-eprint-rest.xml

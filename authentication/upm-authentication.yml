@@ -1,0 +1,117 @@
+specification: API Evangelist Authentication
+specificationVersion: '0.1'
+provider: Universiti Putra Malaysia
+providerId: upm
+generated: '2026-09-01'
+method: probed
+source: >-
+  Unauthenticated live probes of every UPM surface recorded in apis.yml on 2026-09-01. No
+  credentials of any kind were used, and none were needed for any surface listed as public here.
+description: >-
+  How authentication works across Universiti Putra Malaysia's machine-readable surfaces. The
+  picture is unusually clean for this cohort: the two harvesting surfaces are entirely open and
+  the identity surface is the authentication system itself, published as SAML metadata rather
+  than protected by it. There is no API key, no OAuth authorization server, no developer
+  registration, and no self-service credential of any kind — because there is no developer
+  programme. Everything an outside consumer can reach, they can reach anonymously.
+
+surfaces:
+
+  - aid: upm:psasir-oai-pmh
+    name: PSASIR OAI-PMH
+    auth: none
+    x-operator: institution
+    detail: >-
+      Fully open. Identify, ListMetadataFormats, ListSets, ListIdentifiers and GetRecord all
+      answered HTTP 200 with no credentials on 2026-09-01. OAI-PMH has no authentication model.
+    evidence:
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=Identify
+        status: 200
+    transport:
+      https: false
+      note: >-
+        psasir.upm.edu.my does not serve HTTPS. Harvesting is anonymous and the payload is public
+        bibliographic metadata, so there is no credential to expose, but the channel is
+        unauthenticated and unencrypted and integrity of the harvested metadata cannot be assured
+        in transit.
+
+  - aid: upm:psasir-eprints-rest
+    name: PSASIR EPrints REST, export and search
+    auth: none
+    x-operator: institution
+    detail: >-
+      Read access to /rest/, /rest/eprint/{id}.xml, /cgi/export/eprint/{id}/{format}/ and
+      /cgi/search is anonymous. EPrints supports HTTP Basic authentication for write operations
+      against the REST datasets; no write was attempted and none is documented for public use.
+      Only public, archived records are exposed — documents whose full_text_status is not
+      `public` are not served.
+    evidence:
+      - url: http://psasir.upm.edu.my/rest/eprint/813.xml
+        status: 200
+      - url: http://psasir.upm.edu.my/cgi/export/eprint/813/JSON/psasir-eprint-813.js
+        status: 200
+    transport:
+      https: false
+
+  - aid: upm:myagric-oai-pmh
+    name: MyAgric OAI-PMH
+    auth: none
+    x-operator: institution
+    detail: Fully open, same EPrints configuration as PSASIR.
+    evidence:
+      - url: http://myagric.upm.edu.my/cgi/oai2?verb=Identify
+        status: 200
+    transport:
+      https: false
+
+  - aid: upm:saml-idp
+    name: UPM Shibboleth SAML 2.0 Identity Provider
+    auth: saml2
+    x-operator: institution
+    detail: >-
+      This surface IS the authentication system. The metadata document at the entityID is served
+      anonymously — that is required, it is how relying parties consume it — while the SSO and
+      SLO endpoints behind it perform SAML 2.0 authentication for UPM-ID holders. Federated
+      access is governed by SIFULAN and eduGAIN membership, not by any self-service registration.
+      An outside developer cannot obtain UPM credentials; a federated service provider obtains
+      access by joining the federation.
+    mechanisms:
+      - urn:oasis:names:tc:SAML:2.0:protocol
+      - urn:oasis:names:tc:SAML:1.1:protocol
+      - urn:mace:shibboleth:1.0
+    scope: upm.edu.my
+    evidence:
+      - url: https://idf.upm.edu.my/idp/shibboleth
+        status: 200
+    transport:
+      https: true
+      tls_certificate_subject: CN=idf.upm.edu.my
+
+not_available:
+  - mechanism: api_key
+    detail: No API key issuance, developer registration or key-management surface was found.
+  - mechanism: oauth2
+    detail: >-
+      No OAuth 2.0 authorization server, no /.well-known/oauth-authorization-server and no
+      /.well-known/openid-configuration were found on any UPM host probed.
+  - mechanism: protected_resource_metadata
+    detail: No RFC 9728 protected-resource metadata document exists on any UPM host.
+  - mechanism: dynamic_client_registration
+    detail: No RFC 7591 dynamic client registration endpoint exists.
+
+gated_systems:
+  detail: >-
+    UPM's student, staff and administrative applications — the Putra portal, SMP, the study
+    portal, PutraBLAST — sit behind UPM-ID single sign-on and publish no public interface
+    documentation. They are recorded here as gated rather than as APIs, because no public
+    contract for them was found and none is claimed.
+  evidence:
+    - url: https://sso.upm.edu.my/
+      status: 200
+      note: Answers, but serves a 239-byte redirect stub; no public interface documentation.
+    - url: https://smp.upm.edu.my/
+      status: 200
+      note: Answers with a 320-byte stub; login-gated.
+    - url: https://putra.upm.edu.my/
+      status: 200
+      note: Answers with a 1,924-byte stub; login-gated.

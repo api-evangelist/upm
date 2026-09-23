@@ -1,0 +1,99 @@
+openapi: 3.2.0
+info:
+  title: UPM PSASIR — EPrints REST, export and OpenSearch interfaces…
+  version: 3.3.16
+  summary: Read-only machine-readable item, search and export interfaces of the UPM Institutional Repository.
+  description: 'Beyond OAI-PMH, PSASIR (Universiti Putra Malaysia Institutional Repository, EPrints 3.3.16) serves three further unauthenticated machine-readable interfaces, all observed live on 2026-09-01: an EPrints REST dataset browser at /rest/ exposing the eprint, user and subject datasets with per-item XML at /rest/eprint/{id}.xml; a per-item export interface at /cgi/export/eprint/{id}/{format}/{filename} that renders a single record into any installed export plugin, including JSON; and a search…'
+  contact:
+    name: PSASIR repository administrator
+    email: muizzudin@upm.edu.my
+    url: http://psasir.upm.edu.my/information.html
+  x-operator: institution
+  x-operator-basis: Host is under upm.edu.my and resolves into UPMNET (119.40.117.86, org-name UNIVERSITI PUTRA MALAYSIA). Self-hosted open-source EPrints, not a hosted vendor tenancy.
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source: Live probes on 2026-09-01 of http://psasir.upm.edu.my/rest/ (200), /rest/eprint/ (200, 9.9 MB index), /rest/eprint/813.xml (200), /cgi/export/eprint/813/JSON/psasir-eprint-813.js (200, application/json), /cgi/search?q=rice&output=JSON (200, streaming) and /cgi/opensearchdescription (200, application/opensearchdescription+xml), which is the source of the enumerated output formats.
+servers:
+- url: http://psasir.upm.edu.my
+  description: PSASIR (HTTP only — the host does not serve HTTPS)
+tags:
+- name: Search
+  description: Search with selectable output format.
+paths:
+  /cgi/search/simple:
+    get:
+      tags:
+      - Search
+      operationId: searchSimple
+      summary: Simple search with a selectable output representation
+      description: Query the repository and choose the serialization with `output`. The available values are those the repository advertises in its own OpenSearch description document.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        description: Free-text query.
+        schema:
+          type: string
+          examples:
+          - rice
+      - name: search_offset
+        in: query
+        required: false
+        description: Zero-based result offset (OpenSearch indexOffset is 0).
+        schema:
+          type: integer
+          default: 0
+      - name: output
+        in: query
+        required: false
+        description: Output representation.
+        schema:
+          type: string
+          enum:
+          - Atom
+          - BibTeX
+          - CSV
+          - ContextObject
+          - DC
+          - EndNote
+          - HTML
+          - Ids
+          - JSON
+          - METS
+          - RDFN3
+          - RDFNT
+          - RDFXML
+          - RIS
+          - RSS
+          - RSS2
+          - Refer
+          - Text
+          - XML
+          default: HTML
+      responses:
+        '200':
+          description: Search results in the requested representation. Responses are not paged by default and can be very large; an `output=JSON` response was still streaming past 12 MB at 25 seconds on 2026-09-01.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../json-schema/upm-eprints-record-schema.json
+            application/atom+xml:
+              schema:
+                type: string
+  /cgi/opensearchdescription:
+    get:
+      tags:
+      - Search
+      operationId: getOpenSearchDescription
+      summary: Get the repository's OpenSearch 1.1 description document
+      description: The repository's own machine-readable search descriptor. ShortName "Universiti Putra", Contact muizzudin@upm.edu.my, twenty `Url` templates.
+      responses:
+        '200':
+          description: OpenSearch 1.1 description document.
+          content:
+            application/opensearchdescription+xml:
+              schema:
+                type: string

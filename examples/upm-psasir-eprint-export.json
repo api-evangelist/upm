@@ -1,0 +1,54 @@
+    {
+      "status_changed": "2008-11-27 21:04:56",
+      "documents": [
+          {
+            "main": "Movie_1.wmv",
+            "files": [
+                {
+                  "filesize": 2858974,
+                  "objectid": 993,
+                  "mtime": "2013-05-27 06:50:59",
+                  "datasetid": "document",
+                  "fileid": 23639,
+                  "mime_type": "video\/x-ms-wmv",
+                  "filename": "Movie_1.wmv",
+                  "uri": "http:\/\/psasir.upm.edu.my\/id\/file\/23639"
+                }
+            ],
+            "language": "en",
+            "mime_type": "video\/x-ms-wmv",
+            "format": "other",
+            "uri": "http:\/\/psasir.upm.edu.my\/id\/document\/993",
+            "pos": 1,
+            "security": "public",
+            "rev_number": 3,
+            "eprintid": 813,
+            "formatdesc": "Circulation Counter",
+            "docid": 993
+          }
+      ],
+      "metadata_visibility": "show",
+      "abstract": "The check in and check out activity is being carried out at circulation counter",
+      "type": "video",
+      "full_text_status": "public",
+      "title": "Circulation Counter",
+      "lastmod": "2008-12-01 10:54:02",
+      "uri": "http:\/\/psasir.upm.edu.my\/id\/eprint\/813",
+      "ispublished": "pub",
+      "rev_number": 13,
+      "datestamp": "2008-11-27 21:04:56",
+      "eprintid": 813,
+      "creators": [
+        {
+          "name": {
+            "family": "UPM",
+            "honourific": null,
+            "lineage": null,
+            "given": "PSAS"
+          }
+        }
+      ],
+      "dir": "disk0\/00\/00\/08\/13",
+      "eprint_status": "archive",
+      "userid": 1
+    }

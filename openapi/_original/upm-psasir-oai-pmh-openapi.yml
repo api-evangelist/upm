@@ -1,0 +1,120 @@
+# DERIVED CONTRACT — Universiti Putra Malaysia does not publish an OpenAPI definition.
+# This document was written by API Evangelist from live, unauthenticated probes of the
+# endpoint on 2026-09-01 and from the OAI-PMH 2.0 specification the endpoint declares.
+# It is `method: derived`. It is NOT a specification UPM authored or endorses.
+openapi: 3.1.0
+info:
+  title: UPM PSAS Institutional Repository — OAI-PMH 2.0
+  version: '2.0'
+  summary: Metadata harvesting interface for the Universiti Putra Malaysia Institutional Repository.
+  description: >-
+    OAI-PMH 2.0 metadata-harvesting interface for PSASIR, the Universiti Putra Malaysia
+    Institutional Repository, running EPrints 3.3.16 on UPM's own campus network
+    (psasir.upm.edu.my resolves to 119.40.117.86 in UPMNET, "Universiti Putra Malaysia Campus
+    Network"). The repository declares repositoryName "Universiti Putra Malaysia Institutional
+    Repository", repositoryIdentifier psasir.upm.edu.my, adminEmail muizzudin@upm.edu.my, and an
+    earliestDatestamp of 2008-12-01. Six metadata formats are offered: oai_dc, didl, mets,
+    oai_bibl, rdf and uketd_dc. Responses are XML with HTTP 200 in all cases, including protocol
+    errors, which are carried in an OAI-PMH <error code="..."> element per the specification.
+    Note that psasir.upm.edu.my/robots.txt disallows /cgi/ to crawlers; /cgi/oai2 is nevertheless
+    the repository's own advertised harvesting address and is reachable without credentials.
+  contact:
+    name: PSASIR repository administrator
+    email: muizzudin@upm.edu.my
+    url: http://psasir.upm.edu.my/information.html
+  x-operator: institution
+  x-operator-basis: >-
+    Host is under Universiti Putra Malaysia's own registrable domain upm.edu.my and its A record
+    resolves into UPMNET (119.40.112.0/20, org-name UNIVERSITI PUTRA MALAYSIA). The software is
+    EPrints, an open-source package from the University of Southampton that UPM self-hosts; it is
+    not a hosted vendor tenancy, and no vendor identity appears in servers[], info.title or
+    info.contact.
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source: >-
+      Live probes of http://psasir.upm.edu.my/cgi/oai2 (Identify 200, ListMetadataFormats 200,
+      ListSets 200, ListIdentifiers 200, badVerb 200-with-error) on 2026-09-01, read against
+      the OAI-PMH 2.0 specification at https://www.openarchives.org/OAI/openarchivesprotocol.html
+servers:
+  - url: http://psasir.upm.edu.my/cgi
+    description: PSASIR EPrints CGI root (HTTP only — the host does not serve HTTPS)
+tags:
+  - name: OAI-PMH
+    description: OAI-PMH 2.0 harvesting verbs.
+paths:
+  /oai2:
+    get:
+      tags: [OAI-PMH]
+      operationId: oaiRequest
+      summary: Issue an OAI-PMH 2.0 request
+      description: >-
+        Single-endpoint OAI-PMH interface. The `verb` parameter selects the operation. All
+        responses are `text/xml` with HTTP 200; protocol failures are returned as an
+        `<error code="...">` element inside the OAI-PMH envelope, not as an HTTP error status.
+      parameters:
+        - name: verb
+          in: query
+          required: true
+          description: The OAI-PMH verb to invoke.
+          schema:
+            type: string
+            enum: [Identify, ListMetadataFormats, ListSets, ListIdentifiers, ListRecords, GetRecord]
+          examples:
+            identify: { value: Identify }
+        - name: metadataPrefix
+          in: query
+          required: false
+          description: Metadata format. Required for ListIdentifiers, ListRecords and GetRecord.
+          schema:
+            type: string
+            enum: [oai_dc, didl, mets, oai_bibl, rdf, uketd_dc]
+        - name: identifier
+          in: query
+          required: false
+          description: OAI identifier of a single item. Required for GetRecord.
+          schema:
+            type: string
+            examples: ['oai:psasir.upm.edu.my:813']
+        - name: from
+          in: query
+          required: false
+          description: Lower bound on datestamp, granularity YYYY-MM-DDThh:mm:ssZ.
+          schema: { type: string, format: date-time }
+        - name: until
+          in: query
+          required: false
+          description: Upper bound on datestamp, granularity YYYY-MM-DDThh:mm:ssZ.
+          schema: { type: string, format: date-time }
+        - name: set
+          in: query
+          required: false
+          description: setSpec to restrict a selective harvest, as returned by ListSets.
+          schema: { type: string }
+        - name: resumptionToken
+          in: query
+          required: false
+          description: >-
+            Flow-control token returned by a previous incomplete list response. Observed page
+            size is 100 records and observed token expirationDate is 24 hours after issue.
+          schema: { type: string }
+      responses:
+        '200':
+          description: >-
+            An OAI-PMH envelope. Carries the requested payload on success and one or more
+            `<error>` elements on protocol failure — the status code is 200 either way.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+              examples:
+                identify:
+                  summary: Identify (observed 2026-09-01)
+                  externalValue: ../examples/upm-psasir-oai-identify.xml
+                listMetadataFormats:
+                  summary: ListMetadataFormats (observed 2026-09-01)
+                  externalValue: ../examples/upm-psasir-oai-listmetadataformats.xml
+                badVerb:
+                  summary: Protocol error returned with HTTP 200 (observed 2026-09-01)
+                  externalValue: ../examples/upm-psasir-oai-error-badverb.xml

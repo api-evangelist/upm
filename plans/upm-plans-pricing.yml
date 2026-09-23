@@ -4,7 +4,7 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Universiti Putra Malaysia
 providerId: upm
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 reconciled: false
 tags:
 - Education
@@ -12,11 +12,14 @@ tags:
 - University
 - Plans
 description: >-
-  Universiti Putra Malaysia is a non-commercial higher-education institution; its APIs are not sold
-  as a commercial product. Public APIs (library, repository, course, and open-metadata
-  interfaces) are offered free of charge, typically for non-commercial use. Most
-  administrative and identity APIs are not openly self-service and require institutional
-  affiliation, credentials, or federation membership rather than a paid plan.
+  Universiti Putra Malaysia is a non-commercial higher-education institution; it sells no API
+  product and issues no API keys. The surfaces verified on 2026-09-01 — two OAI-PMH 2.0
+  repositories, the PSASIR EPrints REST/export/search interfaces, and the SAML 2.0 identity
+  provider metadata — are all free and open with no registration of any kind. Administrative and
+  student systems are gated by UPM-ID single sign-on and federation membership, which is an
+  affiliation requirement rather than a paid plan. The June 2026 version of this file also
+  referenced library and course APIs; neither was found to exist and both claims were withdrawn
+  on 2026-09-01.
 notes: >-
   No published per-seat or per-call commercial pricing. "Free / Open" reflects open
   public endpoints; "Affiliation / Credentialed" reflects access gated by institutional

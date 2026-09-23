@@ -1,0 +1,106 @@
+specification: API Evangelist Errors
+specificationVersion: '0.1'
+provider: Universiti Putra Malaysia
+providerId: upm
+generated: '2026-09-01'
+method: probed
+source: >-
+  Deliberate malformed requests issued against UPM's own endpoints on 2026-09-01, plus the
+  OAI-PMH 2.0 specification's error vocabulary. Every code below with an `observed: true` flag
+  was actually returned by a UPM host during this run.
+description: >-
+  Error semantics of Universiti Putra Malaysia's machine-readable surfaces. The single most
+  important fact for an automated consumer is that UPM's OAI-PMH endpoints return HTTP 200 for
+  protocol failures — the failure is carried in the XML body, not in the status line. A client
+  that branches on status code alone will treat a bad request as a successful empty harvest.
+  This is standard, conformant OAI-PMH behaviour, not a defect, but it is behaviour that has to
+  be read from the body.
+x-operator: institution
+
+transports:
+  - surface: OAI-PMH (psasir.upm.edu.my/cgi/oai2, myagric.upm.edu.my/cgi/oai2)
+    http_status_on_protocol_error: 200
+    error_carrier: OAI-PMH/error element with a `code` attribute and human-readable text
+    content_type: text/xml; charset=UTF-8
+    machine_readable: true
+    problem_json: false
+    note: >-
+      No RFC 9457 problem+json, no error object in JSON, no Retry-After and no rate-limit
+      headers were observed on any response.
+
+errors:
+  - code: badVerb
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: true
+    message: The value of the verb argument is not a legal OAI-PMH verb
+    trigger: A `verb` outside {Identify, ListMetadataFormats, ListSets, ListIdentifiers, ListRecords, GetRecord}.
+    evidence:
+      url: http://psasir.upm.edu.my/cgi/oai2?verb=NoSuchVerb
+      status: 200
+      note: Returned alongside a second `badArgument` error in the same envelope.
+  - code: badArgument
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: true
+    message: Bad verb argument
+    trigger: Missing, repeated, or illegal argument for the requested verb.
+    evidence:
+      url: http://psasir.upm.edu.my/cgi/oai2?verb=NoSuchVerb
+      status: 200
+  - code: idDoesNotExist
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: true
+    message: "'oai:psasir.upm.edu.my:99999999' is not a valid item in this repository"
+    trigger: GetRecord for an identifier not held by the repository.
+    evidence:
+      url: http://psasir.upm.edu.my/cgi/oai2?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:psasir.upm.edu.my:99999999
+      status: 200
+  - code: cannotDisseminateFormat
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: false
+    trigger: A metadataPrefix outside {oai_dc, didl, mets, oai_bibl, rdf, uketd_dc}.
+    note: Part of the OAI-PMH 2.0 vocabulary the endpoint implements; not exercised in this run.
+  - code: noRecordsMatch
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: false
+    trigger: A from/until/set combination that selects nothing.
+    note: Part of the OAI-PMH 2.0 vocabulary; not exercised in this run.
+  - code: badResumptionToken
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: false
+    trigger: An expired or malformed resumptionToken. Observed tokens carry a 24-hour expirationDate.
+  - code: noSetHierarchy
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: false
+    note: Not applicable — the repository does implement sets and answers ListSets.
+  - code: noMetadataFormats
+    standard: OAI-PMH 2.0
+    http_status: 200
+    observed: false
+    note: Not applicable — six metadata formats are offered.
+
+operational_hazards:
+  - surface: http://psasir.upm.edu.my/cgi/search
+    hazard: unbounded_response
+    detail: >-
+      `output=JSON` on a broad query streamed past 12,179,125 bytes without completing inside a
+      25-second budget. There is no default page size on this interface. Consumers should use
+      OAI-PMH ListIdentifiers with a resumptionToken for bulk work.
+    observed: '2026-09-01'
+  - surface: http://psasir.upm.edu.my/rest/eprint/
+    hazard: unbounded_response
+    detail: The full eprint index returned 9,899,179 bytes with no paging parameter available.
+    observed: '2026-09-01'
+  - surface: /robots.txt on both repositories
+    hazard: crawl_directive
+    detail: >-
+      Both psasir.upm.edu.my and myagric.upm.edu.my disallow /cgi/ to crawlers while advertising
+      /cgi/oai2 as their harvesting address. Automated consumers should treat OAI-PMH as the
+      sanctioned path and crawl politely.
+    observed: '2026-09-01'

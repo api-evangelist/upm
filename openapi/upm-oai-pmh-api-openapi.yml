@@ -1,0 +1,97 @@
+openapi: 3.2.0
+info:
+  title: UPM MyAgric (Malaysian Agricultural Repository) — 2.0 OAI…
+  version: '2.0'
+  summary: Metadata harvesting interface for MyAgric, the Malaysian Agricultural Repository operated by UPM.
+  description: OAI-PMH 2.0 metadata-harvesting interface for MyAgric, the Malaysian Agricultural Repository, running EPrints 3.3.16 on Universiti Putra Malaysia's own campus network (myagric.upm.edu.my resolves to 119.40.117.127 in UPMNET, "Universiti Putra Malaysia Campus Network").
+  contact:
+    name: MyAgric repository administrator
+    email: muizzudin@upm.edu.my
+    url: http://myagric.upm.edu.my/
+  x-operator: institution
+  x-operator-basis: Host is under upm.edu.my and resolves into UPMNET (org-name UNIVERSITI PUTRA MALAYSIA). EPrints is open-source software UPM self-hosts, not a vendor tenancy; no vendor identity appears in servers[], info.title or info.contact.
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source: Live probes of http://myagric.upm.edu.my/cgi/oai2 (Identify 200, ListIdentifiers 200, GetRecord 200) and http://myagric.upm.edu.my/rest/eprint/1.xml (200) on 2026-09-01, read against https://www.openarchives.org/OAI/openarchivesprotocol.html
+servers:
+- url: http://myagric.upm.edu.my/cgi
+  description: MyAgric EPrints CGI root (HTTP only — the host does not serve HTTPS)
+tags:
+- name: oai pmh
+  description: OAI-PMH 2.0 harvesting verbs.
+paths:
+  /oai2:
+    get:
+      tags:
+      - oai pmh
+      operationId: oaiRequest
+      summary: Issue an OAI-PMH 2.0 request
+      description: Single-endpoint OAI-PMH interface. All responses are `text/xml` with HTTP 200; protocol failures are carried as an `` element inside the envelope.
+      parameters:
+      - name: verb
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - Identify
+          - ListMetadataFormats
+          - ListSets
+          - ListIdentifiers
+          - ListRecords
+          - GetRecord
+      - name: metadataPrefix
+        in: query
+        required: false
+        description: Metadata format. Required for ListIdentifiers, ListRecords and GetRecord.
+        schema:
+          type: string
+          examples:
+          - oai_dc
+      - name: identifier
+        in: query
+        required: false
+        description: OAI identifier of a single item. Required for GetRecord.
+        schema:
+          type: string
+          examples:
+          - oai:myagric.upm.edu.my:1
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: until
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: set
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: resumptionToken
+        in: query
+        required: false
+        description: Flow-control token; observed page size is 100 records.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OAI-PMH envelope, success or protocol error.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+              examples:
+                identify:
+                  summary: Identify (observed 2026-09-01)
+                  externalValue: ../examples/upm-myagric-oai-identify.xml
+                getRecord:
+                  summary: GetRecord oai:myagric.upm.edu.my:1 (observed 2026-09-01)
+                  externalValue: ../examples/upm-myagric-oai-getrecord.xml

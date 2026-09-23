@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/upm/refs/heads/main/json-schema/upm-eprints-record-schema.json",
+  "title": "UPM PSASIR EPrints record (JSON export)",
+  "description": "Shape of a single record as returned by the Universiti Putra Malaysia Institutional Repository (PSASIR, EPrints 3.3.16) JSON export plugin. Derived by API Evangelist from an observed live response; UPM publishes no schema for this representation.",
+  "x-provenance": {
+    "generated": "2026-09-01",
+    "method": "derived",
+    "source": "http://psasir.upm.edu.my/cgi/export/eprint/813/JSON/psasir-eprint-813.js (HTTP 200, application/json, observed 2026-09-01) and http://psasir.upm.edu.my/rest/eprint/813.xml (HTTP 200)",
+    "x-operator": "institution"
+  },
+  "type": "object",
+  "required": ["eprintid", "eprint_status", "type", "title", "uri", "datestamp"],
+  "properties": {
+    "eprintid": { "type": "integer", "description": "Repository-local numeric identifier." },
+    "rev_number": { "type": "integer", "description": "EPrints revision counter." },
+    "eprint_status": { "type": "string", "description": "Workflow state.", "examples": ["archive"] },
+    "metadata_visibility": { "type": "string", "examples": ["show"] },
+    "full_text_status": { "type": "string", "examples": ["public", "restricted", "none"] },
+    "ispublished": { "type": "string", "examples": ["pub", "inpress", "submitted", "unpub"] },
+    "type": { "type": "string", "description": "Item type.", "examples": ["article", "thesis", "video", "book_section"] },
+    "title": { "type": "string" },
+    "abstract": { "type": "string" },
+    "uri": { "type": "string", "format": "uri", "description": "Canonical item URI under http://psasir.upm.edu.my/id/eprint/." },
+    "userid": { "type": "integer", "description": "Depositing account id." },
+    "dir": { "type": "string", "description": "Internal storage path fragment." },
+    "datestamp": { "type": "string", "description": "Deposit timestamp, 'YYYY-MM-DD hh:mm:ss'." },
+    "lastmod": { "type": "string", "description": "Last modification timestamp." },
+    "status_changed": { "type": "string", "description": "Timestamp of the last workflow-state change." },
+    "creators": {
+      "type": "array",
+      "description": "Authors. Note the observed record carries an institutional depositor rather than a person, so consumers must not assume a personal name.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object",
+            "properties": {
+              "family": { "type": ["string", "null"] },
+              "given": { "type": ["string", "null"] },
+              "honourific": { "type": ["string", "null"] },
+              "lineage": { "type": ["string", "null"] }
+            }
+          },
+          "id": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "related_url": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "format": "uri" },
+          "type": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "documents": {
+      "type": "array",
+      "description": "Attached documents and their files.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "main": { "type": "string", "description": "Filename of the primary file." },
+          "docid": { "type": "integer" },
+          "format": { "type": "string" },
+          "security": { "type": "string" },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "objectid": { "type": "integer" },
+                "filename": { "type": "string" },
+                "filesize": { "type": "integer" },
+                "mtime": { "type": "string" },
+                "mime_type": { "type": "string" },
+                "hash": { "type": ["string", "null"] },
+                "hash_type": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

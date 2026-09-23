@@ -1,0 +1,87 @@
+specification: API Evangelist Examples
+specificationVersion: '0.1'
+provider: Universiti Putra Malaysia
+providerId: upm
+generated: '2026-09-01'
+method: probed
+source: >-
+  Every file listed below is a verbatim, unmodified response captured from a Universiti Putra
+  Malaysia host on 2026-09-01 with an unauthenticated GET. Nothing here was written by hand or
+  synthesised; the `method` on each entry is `probed` for exactly that reason.
+description: >-
+  Captured live responses from UPM's machine-readable surfaces, kept alongside the derived
+  OpenAPI documents so that the derivation can be checked against what the endpoints actually
+  returned. The badVerb capture is included deliberately: it is the evidence that UPM's OAI-PMH
+  endpoints answer protocol errors with HTTP 200.
+
+examples:
+  - file: examples/upm-psasir-oai-identify.xml
+    method: probed
+    x-operator: institution
+    source: http://psasir.upm.edu.my/cgi/oai2?verb=Identify
+    status: 200
+    content_type: text/xml; charset=UTF-8
+    generated: '2026-09-01'
+    describes: OAI-PMH Identify response for the UPM Institutional Repository (EPrints 3.3.16).
+  - file: examples/upm-psasir-oai-listmetadataformats.xml
+    method: probed
+    x-operator: institution
+    source: http://psasir.upm.edu.my/cgi/oai2?verb=ListMetadataFormats
+    status: 200
+    content_type: text/xml; charset=UTF-8
+    generated: '2026-09-01'
+    describes: The six metadata formats PSASIR disseminates.
+  - file: examples/upm-psasir-oai-error-badverb.xml
+    method: probed
+    x-operator: institution
+    source: http://psasir.upm.edu.my/cgi/oai2?verb=NoSuchVerb
+    status: 200
+    content_type: text/xml; charset=UTF-8
+    generated: '2026-09-01'
+    describes: >-
+      A protocol error returned with HTTP 200 and two `<error>` elements — badVerb and
+      badArgument. Evidence for errors/upm-errors.yml.
+  - file: examples/upm-psasir-eprint-export.json
+    method: probed
+    x-operator: institution
+    source: http://psasir.upm.edu.my/cgi/export/eprint/813/JSON/psasir-eprint-813.js
+    status: 200
+    content_type: application/json; charset=utf-8
+    generated: '2026-09-01'
+    describes: >-
+      One repository record through the EPrints JSON export plugin. The source record for
+      json-schema/upm-eprints-record-schema.json.
+  - file: examples/upm-psasir-eprint-rest.xml
+    method: probed
+    x-operator: institution
+    source: http://psasir.upm.edu.my/rest/eprint/813.xml
+    status: 200
+    content_type: text/xml; charset=UTF-8
+    generated: '2026-09-01'
+    describes: The same record through the EPrints REST dataset interface, in EPrints XML.
+  - file: examples/upm-myagric-oai-identify.xml
+    method: probed
+    x-operator: institution
+    source: http://myagric.upm.edu.my/cgi/oai2?verb=Identify
+    status: 200
+    content_type: text/xml; charset=UTF-8
+    generated: '2026-09-01'
+    describes: OAI-PMH Identify for MyAgric, the Malaysian Agricultural Repository UPM operates.
+  - file: examples/upm-myagric-oai-getrecord.xml
+    method: probed
+    x-operator: institution
+    source: http://myagric.upm.edu.my/cgi/oai2?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:myagric.upm.edu.my:1
+    status: 200
+    content_type: text/xml; charset=UTF-8
+    generated: '2026-09-01'
+    describes: A single MyAgric record in oai_dc.
+  - file: identity-federation/upm-idp-saml-metadata.xml
+    method: probed
+    x-operator: institution
+    source: https://idf.upm.edu.my/idp/shibboleth
+    status: 200
+    content_type: application/xml;charset=utf-8
+    generated: '2026-09-01'
+    describes: >-
+      UPM's own SAML 2.0 EntityDescriptor. Kept under identity-federation/ rather than examples/
+      because it is the surface itself, not a sample of one.

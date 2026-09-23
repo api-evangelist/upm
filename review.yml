@@ -3,7 +3,7 @@ name: Universiti Putra Malaysia
 description: Universiti Putra Malaysia public developer/API footprint review for APIs.json cataloging.
 url: https://raw.githubusercontent.com/api-evangelist/upm/refs/heads/main/review.yml
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 reviews:
   - date: '2026-06-03'
     rating: 2
@@ -46,3 +46,67 @@ reviews:
       - url: https://www.linkedin.com/school/universiti-putra-malaysia/
         status: 999
         note: LinkedIn school page; 999 is a bot-block, page exists in browser.
+  - date: '2026-09-01'
+    rating: 3
+    summary: >-
+      Re-profiled under the API Evangelist university pipeline, with operator attribution settled
+      before any artifact was saved. No vendor contract was found in this repository and none was
+      removed — UPM is one of the institutions the June 2026 Figshare/Pure misattribution did not
+      touch. The footprint is larger than the June review recorded, and every surface in it is
+      institution-operated. Two additions: MyAgric, the Malaysian Agricultural Repository, is a
+      second EPrints 3.3.16 deployment UPM runs on its own campus network with its own OAI-PMH 2.0
+      endpoint, and PSASIR serves unauthenticated EPrints REST, per-item export and OpenSearch
+      interfaces advertising twenty output representations, none of which had been catalogued.
+      Both repository hosts resolve into UPMNET, "Universiti Putra Malaysia Campus Network". The
+      Shibboleth identity provider was confirmed as UPM's own rather than a managed-IdP tenancy —
+      every SSO and SLO location terminates on idf.upm.edu.my with no CNAME to an identity
+      platform — and its eduGAIN registration through SIFULAN, the Malaysian Access Federation,
+      was confirmed from eduGAIN's own database. Two registry memberships were evidenced: Crossref
+      member 27687 holding DOI prefix 10.47836 across 5,871 DOIs, and ROR 02e91jd64. One
+      correction went the other way and lowers the score: the vulnerability-disclosure page
+      claimed in July 2026 does not exist. upm.edu.my soft-404s, returning HTTP 200 with site
+      chrome and an empty title for every unknown path, and the claimed disclosure URL is
+      indistinguishable from a nonsense path. That artifact was withdrawn. UPM still publishes no
+      OpenAPI, no developer portal, no API keys, no open-data portal, no course-catalog API, no
+      GitHub organisation, no llms.txt and no security.txt. Nothing was fabricated.
+    endpoints:
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=ListIdentifiers&metadataPrefix=oai_dc
+        status: 200
+        note: Real selective harvest — 100 identifiers and a 24-hour resumptionToken, not a link check.
+      - url: http://psasir.upm.edu.my/rest/eprint/813.xml
+        status: 200
+        note: EPrints REST dataset interface, anonymous read.
+      - url: http://psasir.upm.edu.my/cgi/export/eprint/813/JSON/psasir-eprint-813.js
+        status: 200
+        note: Per-item JSON export; source record for the derived JSON Schema.
+      - url: http://psasir.upm.edu.my/cgi/opensearchdescription
+        status: 200
+        note: The repository's own OpenSearch 1.1 descriptor, enumerating twenty output formats.
+      - url: http://myagric.upm.edu.my/cgi/oai2?verb=Identify
+        status: 200
+        note: Second UPM-operated repository — Malaysian Agricultural Repository, EPrints 3.3.16.
+      - url: http://myagric.upm.edu.my/cgi/oai2?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:myagric.upm.edu.my:1
+        status: 200
+      - url: https://idf.upm.edu.my/idp/shibboleth
+        status: 200
+        note: SAML 2.0 EntityDescriptor, scope upm.edu.my, all endpoints on UPM's own host.
+      - url: https://technical.edugain.org/api?action=list_entities&format=json
+        status: 200
+        note: eduGAIN entity 672307, registration authority https://sifulan.my, first seen 2020-06-19.
+      - url: https://api.crossref.org/members/27687
+        status: 200
+        note: Crossref member, prefix 10.47836, 5,871 DOIs.
+      - url: https://api.ror.org/v2/organizations?query=Universiti+Putra+Malaysia
+        status: 200
+        note: ROR 02e91jd64, cross-walked to GRID, ISNI, Wikidata and five Crossref Funder ids.
+      - url: https://upm.edu.my/vulnerability-disclosure
+        status: 200
+        note: >-
+          Soft-404 — site chrome only, empty title, indistinguishable from a nonsense path that
+          also returns 200. The July 2026 vulnerability-disclosure artifact was withdrawn.
+      - url: https://api.datacite.org/clients?query=Putra
+        status: 200
+        note: Zero results. UPM holds no DataCite client; datacite is recorded as not evidenced.
+      - url: https://my-gitlab.upm.edu.my/api/v4/version
+        status: 000
+        note: In certificate transparency logs but does not answer on 443. Not recorded as a surface.

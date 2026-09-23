@@ -1,0 +1,113 @@
+specification: API Evangelist Identity Federation
+specificationVersion: '0.1'
+provider: Universiti Putra Malaysia
+providerId: upm
+generated: '2026-09-01'
+method: probed
+source: >-
+  Live fetch of https://idf.upm.edu.my/idp/shibboleth (SAML 2.0 EntityDescriptor, HTTP 200,
+  application/xml, 7,992 bytes) on 2026-09-01, plus the eduGAIN technical database API
+  https://technical.edugain.org/api?action=list_entities&format=json (HTTP 200, 7,811,988 bytes,
+  10,615 entities) searched for entities under upm.edu.my. DNS, RIR whois and the served TLS
+  certificate were used to settle operator.
+description: >-
+  Universiti Putra Malaysia's SAML 2.0 identity federation surface. This is the strongest
+  machine-readable institution-operated interface UPM has, and it is the class the university
+  cohort was most completely missing. UPM runs its own Shibboleth Identity Provider at
+  idf.upm.edu.my, publishes conforming SAML 2.0 metadata at its entityID, and is registered in
+  eduGAIN through SIFULAN, the Malaysian Access Federation, where it has been present since
+  2020-06-19.
+
+  Operator is `institution`, and the reasoning is worth stating because the same question
+  produced the opposite answer for Monash and UCL in this cohort. There, an institution-branded
+  IdP hostname turned out to front a managed identity platform — AAF Rapid IdP in one case,
+  OpenAthens in the other — and every SSO location in the metadata pointed away from the
+  university. UPM's does not: every SingleSignOnService and SingleLogoutService location is on
+  idf.upm.edu.my itself, there is no CNAME to a managed platform, and the TLS certificate is
+  issued to CN=idf.upm.edu.my. What is true is that the host sits outside UPM's own campus
+  network allocation — psasir and myagric resolve into UPMNET (119.40.112.0/20, org-name
+  UNIVERSITI PUTRA MALAYSIA) while idf.upm.edu.my resolves to 103.122.164.65 at GB Network
+  Solutions Sdn. Bhd., a Malaysian commercial hosting provider. Renting a server is not buying
+  an identity service; peer Malaysian university IdPs (idp.usm.my, idp.um.edu.my, idp.ukm.my)
+  each resolve into unrelated netblocks, so there is no shared managed platform to be a tenant
+  of. The infrastructure note is recorded here rather than being allowed to change the verdict.
+
+federation:
+  name: SIFULAN Malaysian Access Federation
+  abbreviation: SIFULAN
+  registration_authority: https://sifulan.my
+  interfederation: eduGAIN
+  edugain_entity_id: '672307'
+  edugain_api: https://technical.edugain.org/api?action=list_entities&format=json
+  edugain_api_status: 200
+  member_since: '2020-06-19'
+  probed: '2026-09-01'
+  federation_site_status: 403
+  federation_site_note: >-
+    https://sifulan.my/ returns a Cloudflare bot challenge ("Just a moment...", HTTP 403). The
+    federation's own site is not readable unattended; membership is evidenced from eduGAIN's API
+    instead, which is a stronger source anyway because it is the interfederation's own record.
+
+identity_provider:
+  entityID: https://idf.upm.edu.my/idp/shibboleth
+  x-operator: institution
+  operator_basis: >-
+    Hostname, entityID, endpoints, scope and certificate are all UPM's. No CNAME to a managed
+    identity platform; all SSO/SLO locations terminate on idf.upm.edu.my. The A record points at
+    a commercial Malaysian hosting provider rather than UPM's campus allocation, which is noted
+    but does not make UPM a tenant of an identity service.
+  metadata_url: https://idf.upm.edu.my/idp/shibboleth
+  metadata_status: 200
+  metadata_content_type: application/xml;charset=utf-8
+  metadata_bytes: 7992
+  local_copy: identity-federation/upm-idp-saml-metadata.xml
+  software: Shibboleth Identity Provider
+  scope: upm.edu.my
+  scope_regexp: false
+  organization_name: Universiti Putra Malaysia
+  organization_url: https://www.upm.edu.my
+  mdui:
+    display_name: Universiti Putra Malaysia
+    description: Research and Education Communities
+    information_url: https://www.upm.edu.my
+    logo: https://idf.upm.edu.my/idp/images/logo.png
+  protocol_support:
+    - urn:oasis:names:tc:SAML:2.0:protocol
+    - urn:oasis:names:tc:SAML:1.1:protocol
+    - urn:mace:shibboleth:1.0
+  single_sign_on_service:
+    - binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+      location: https://idf.upm.edu.my/idp/profile/SAML2/POST/SSO
+    - binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign
+      location: https://idf.upm.edu.my/idp/profile/SAML2/POST-SimpleSign/SSO
+    - binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+      location: https://idf.upm.edu.my/idp/profile/SAML2/Redirect/SSO
+    - binding: urn:mace:shibboleth:1.0:profiles:AuthnRequest
+      location: https://idf.upm.edu.my/idp/profile/Shibboleth/SSO
+  single_logout_service:
+    - binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+      location: https://idf.upm.edu.my/idp/profile/SAML2/POST/SLO
+    - binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+      location: https://idf.upm.edu.my/idp/profile/SAML2/Redirect/SLO
+  algorithm_support:
+    digest: http://www.w3.org/2001/04/xmlenc#sha256
+    signing: http://www.w3.org/2001/04/xmldsig-more#rsa-sha256
+  tls_certificate:
+    subject: CN=idf.upm.edu.my
+    issuer: "C=US, O=Let's Encrypt, CN=YE1"
+    not_before: 'Aug 22 08:39:07 2026 GMT'
+    not_after: 'Nov 20 08:39:06 2026 GMT'
+  hosting:
+    resolved_ip: 103.122.164.65
+    ip_owner: GB Network Solutions Sdn. Bhd. (GBNETWORK-MY)
+    country: MY
+    note: >-
+      Outside UPM's own UPMNET allocation, unlike psasir.upm.edu.my (119.40.117.86) and
+      myagric.upm.edu.my (119.40.117.127), which are both in UPMNET.
+
+not_found:
+  - host: idp.upm.edu.my
+    status: 000
+    note: >-
+      Appears in certificate transparency logs for upm.edu.my but does not answer on 443
+      (connection refused). Not recorded as a surface.

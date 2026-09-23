@@ -1,0 +1,33 @@
+{
+  "provider": "upm",
+  "sources": [
+    "_original/upm-myagric-oai-pmh-openapi.yml",
+    "_original/upm-psasir-eprints-rest-openapi.yml"
+  ],
+  "outputs": [
+    "upm-oai-pmh-api-openapi.yml",
+    "upm-export-api-openapi.yml",
+    "upm-rest-api-openapi.yml",
+    "upm-search-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "4 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "upm-myagric-oai-pmh-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "upm-psasir-eprints-rest-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/upm-psasir-oai-pmh-openapi_2.yml: archived document superseded by a larger archived document",
+    "_original/upm-psasir-oai-pmh-openapi.yml: archived document superseded by a larger archived document",
+    "_original/upm-psasir-eprints-rest-openapi_2.yml: archived document superseded by a larger archived document",
+    "_original/upm-myagric-oai-pmh-openapi_2.yml: archived document superseded by a larger archived document",
+    "upm-export-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "upm-oai-pmh-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "upm-rest-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "upm-search-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

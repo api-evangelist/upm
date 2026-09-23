@@ -4,7 +4,7 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Universiti Putra Malaysia
 providerId: upm
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 reconciled: false
 tags:
 - Education
@@ -12,15 +12,30 @@ tags:
 - University
 - Rate Limiting
 description: >-
-  Universiti Putra Malaysia does not publish a unified public rate-limit table across its APIs. Open
-  metadata and harvesting endpoints (OAI-PMH, IIIF, library) may throttle large-scale
-  or automated harvesting; clients should harvest politely, honor Retry-After, and
-  contact the relevant service for bulk access.
-notes: Confirm per-service limits with each API's documentation; harvest responsibly.
+  Universiti Putra Malaysia publishes no rate-limit policy for any of its surfaces. Probing on
+  2026-09-01 returned no rate-limit headers, no Retry-After and no 429 on any UPM endpoint, and
+  no throttling was encountered. The practical constraint is the opposite of a documented limit:
+  two PSASIR interfaces return unbounded responses — the full /rest/eprint/ index came back at
+  9,899,179 bytes with no paging parameter, and an output=JSON search was still streaming past
+  12,179,125 bytes at 25 seconds. Bulk consumers should harvest through OAI-PMH, which does
+  implement flow control with a resumptionToken at an observed page size of 100 and a 24-hour
+  token lifetime. Both repository hosts also disallow /cgi/ in robots.txt while advertising
+  /cgi/oai2 as their harvesting address; harvest politely.
+notes: >-
+  No published limit, and none observed. The IIIF and library-API references in the June 2026
+  version of this file were withdrawn on 2026-09-01 — neither surface was found to exist.
 sources:
 - https://raw.githubusercontent.com/api-evangelist/upm/refs/heads/main/apis.yml
 responseCodes:
   throttled: 429
+  observed: none
+observation:
+  generated: '2026-09-01'
+  method: probed
+  source: Unauthenticated probes of every host in apis.yml on 2026-09-01.
+  rate_limit_headers: none observed
+  retry_after: none observed
+  status_429_observed: false
 limits:
 - name: Default
   scope: client

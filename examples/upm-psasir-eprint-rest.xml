@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<eprints xmlns='http://eprints.org/ep2/data/2.0'>
+  <eprint id='http://psasir.upm.edu.my/id/eprint/813'>
+    <eprintid>813</eprintid>
+    <rev_number>13</rev_number>
+    <documents>
+      <document id='http://psasir.upm.edu.my/id/document/993'>
+        <docid>993</docid>
+        <rev_number>3</rev_number>
+        <files>
+          <file id='http://psasir.upm.edu.my/id/file/23639'>
+            <fileid>23639</fileid>
+            <datasetid>document</datasetid>
+            <objectid>993</objectid>
+            <filename>Movie_1.wmv</filename>
+            <mime_type>video/x-ms-wmv</mime_type>
+            <filesize>2858974</filesize>
+            <mtime>2013-05-27 06:50:59</mtime>
+            <url>http://psasir.upm.edu.my/id/eprint/813/1/Movie_1.wmv</url>
+          </file>
+        </files>
+        <eprintid>813</eprintid>
+        <pos>1</pos>
+        <mime_type>video/x-ms-wmv</mime_type>
+        <format>other</format>
+        <formatdesc>Circulation Counter</formatdesc>
+        <language>en</language>
+        <security>public</security>
+        <main>Movie_1.wmv</main>
+      </document>
+    </documents>
+    <eprint_status>archive</eprint_status>
+    <userid>1</userid>
+    <dir>disk0/00/00/08/13</dir>
+    <datestamp>2008-11-27 21:04:56</datestamp>
+    <lastmod>2008-12-01 10:54:02</lastmod>
+    <status_changed>2008-11-27 21:04:56</status_changed>
+    <type>video</type>
+    <metadata_visibility>show</metadata_visibility>
+    <creators>
+      <item>
+        <name>
+          <family>UPM</family>
+          <given>PSAS</given>
+        </name>
+      </item>
+    </creators>
+    <title>Circulation Counter</title>
+    <ispublished>pub</ispublished>
+    <full_text_status>public</full_text_status>
+    <abstract>The check in and check out activity is being carried out at circulation counter</abstract>
+  </eprint>
+</eprints>

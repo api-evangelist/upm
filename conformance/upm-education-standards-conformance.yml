@@ -1,0 +1,241 @@
+# Domain-standard conformance — Universiti Putra Malaysia — education regulatory regime (Kin Score 0.12.0)
+# Reward-only. Every entry under `conformance:` is a standard UPM was OBSERVED to conform to, with
+# the exact location the observation was made. Standards with no verified evidence are listed under
+# `not_evidenced` and are NOT claimed.
+---
+aid: upm
+name: Universiti Putra Malaysia — education regime domain-standard conformance
+description: >-
+  Conformance observations for Universiti Putra Malaysia against the Kin Score `education`
+  regulatory regime standards[] set (scim, lti, oneroster, ed-fi, caliper, qti, oai-pmh,
+  shibboleth, saml, orcid, datacite, crossref). Each hit records the operator of the surface the
+  standard is implemented on, because for a university the institution and the operator are
+  frequently not the same party. For UPM they largely are: both OAI-PMH endpoints and the SAML
+  identity provider are UPM's own deployments on UPM's own domain, and two of the three resolve
+  into UPM's own campus network allocation.
+regime: education
+generated: '2026-09-01'
+method: probed
+source: >-
+  Direct unauthenticated HTTP probes of UPM-operated hosts on 2026-09-01, plus three third-party
+  registries that publish machine-readable institutional registrations: the eduGAIN technical
+  database API, the Crossref REST API, and the ROR REST API. DNS and RIR whois were used to
+  settle operator.
+
+conformance:
+
+  - standard: oai-pmh
+    status: evidenced
+    x-operator: institution
+    surface: PSASIR — Universiti Putra Malaysia Institutional Repository
+    detail: >-
+      PSASIR is UPM's open-access institutional repository, running EPrints 3.3.16 on UPM's own
+      registrable domain and inside UPM's own network allocation. Its OAI-PMH 2.0 endpoint at
+      psasir.upm.edu.my/cgi/oai2 answered Identify, ListMetadataFormats, ListSets and a real
+      ListIdentifiers harvest, all HTTP 200 with valid OAI-PMH XML. Six metadata formats are
+      offered and flow control is implemented with a resumptionToken at a page size of 100.
+      This is a full protocol implementation, not a landing page.
+    evidence:
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=Identify
+        status: 200
+        locator: OAI-PMH/Identify
+        observed:
+          repository_name: Universiti Putra Malaysia Institutional Repository
+          repository_identifier: psasir.upm.edu.my
+          protocol_version: '2.0'
+          admin_email: muizzudin@upm.edu.my
+          earliest_datestamp: '2008-12-01T10:54:02Z'
+          deleted_record: persistent
+          granularity: YYYY-MM-DDThh:mm:ssZ
+          software: EPrints 3.3.16
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=ListMetadataFormats
+        status: 200
+        locator: OAI-PMH/ListMetadataFormats/metadataFormat/metadataPrefix
+        observed:
+          metadata_prefixes: [didl, mets, oai_bibl, oai_dc, rdf, uketd_dc]
+      - url: http://psasir.upm.edu.my/cgi/oai2?verb=ListIdentifiers&metadataPrefix=oai_dc
+        status: 200
+        locator: OAI-PMH/ListIdentifiers
+        observed:
+          identifiers_in_first_page: 100
+          resumption_token: present, 24-hour expirationDate
+        note: A real selective-harvest query, not a link check.
+    confidence: high
+
+  - standard: oai-pmh
+    status: evidenced
+    x-operator: institution
+    surface: MyAgric — Malaysian Agricultural Repository
+    detail: >-
+      A second, distinct OAI-PMH 2.0 endpoint UPM operates, for MyAgric, the Malaysian
+      Agricultural Repository. Same software (EPrints 3.3.16) and same administrator as PSASIR,
+      different repository identifier, different content and a different earliest datestamp.
+      Identify, ListIdentifiers and a GetRecord for a named identifier all returned HTTP 200 with
+      valid OAI-PMH XML.
+    evidence:
+      - url: http://myagric.upm.edu.my/cgi/oai2?verb=Identify
+        status: 200
+        locator: OAI-PMH/Identify
+        observed:
+          repository_name: Malaysian Agricultural Repository
+          repository_identifier: myagric.upm.edu.my
+          protocol_version: '2.0'
+          admin_email: muizzudin@upm.edu.my
+          earliest_datestamp: '2017-07-04T06:22:19Z'
+      - url: http://myagric.upm.edu.my/cgi/oai2?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:myagric.upm.edu.my:1
+        status: 200
+        locator: OAI-PMH/GetRecord/record/header/identifier
+        observed:
+          identifier: oai:myagric.upm.edu.my:1
+          datestamp: '2017-07-04T06:22:19Z'
+    confidence: high
+
+  - standard: shibboleth
+    status: evidenced
+    x-operator: institution
+    surface: UPM Identity Provider, idf.upm.edu.my
+    detail: >-
+      UPM publishes SAML metadata for its own Shibboleth Identity Provider at
+      https://idf.upm.edu.my/idp/shibboleth. The document carries the Shibboleth metadata
+      extension shibmd:Scope asserting the scope `upm.edu.my`, the Shibboleth 1.0
+      AuthnRequest profile in protocolSupportEnumeration, and a Shibboleth SSO endpoint at
+      /idp/profile/Shibboleth/SSO — all three are Shibboleth-specific, not generic SAML.
+      Operator is recorded as `institution` and not `tenant`: unlike the AAF Rapid IdP pattern
+      seen elsewhere in this cohort, every SingleSignOnService and SingleLogoutService location
+      in the metadata is on idf.upm.edu.my itself, the entityID is UPM's, the TLS certificate is
+      issued to CN=idf.upm.edu.my, and there is no CNAME to a managed identity platform. The
+      host does sit outside UPM's own campus allocation — it resolves to 103.122.164.65, which
+      whois attributes to GB Network Solutions Sdn. Bhd., a Malaysian commercial hosting
+      provider — but renting a server is not buying an identity service, and peer Malaysian
+      university IdPs each resolve into unrelated netblocks, so there is no shared managed
+      platform behind them.
+    evidence:
+      - url: https://idf.upm.edu.my/idp/shibboleth
+        status: 200
+        content_type: application/xml;charset=utf-8
+        locator: md:EntityDescriptor/md:IDPSSODescriptor/md:Extensions/shibmd:Scope
+        observed:
+          entity_id: https://idf.upm.edu.my/idp/shibboleth
+          shibmd_scope: upm.edu.my
+          scope_regexp: false
+          protocol_support: [urn:oasis:names:tc:SAML:2.0:protocol, urn:oasis:names:tc:SAML:1.1:protocol, 'urn:mace:shibboleth:1.0']
+          shibboleth_sso_location: https://idf.upm.edu.my/idp/profile/Shibboleth/SSO
+          organization_display_name: Universiti Putra Malaysia
+      - url: https://idf.upm.edu.my/idp/shibboleth
+        status: 200
+        locator: TLS certificate
+        observed:
+          subject: CN=idf.upm.edu.my
+          issuer: "C=US, O=Let's Encrypt, CN=YE1"
+    local_copy: identity-federation/upm-idp-saml-metadata.xml
+    confidence: high
+
+  - standard: saml
+    status: evidenced
+    x-operator: institution
+    surface: UPM Identity Provider, idf.upm.edu.my — registered in eduGAIN via SIFULAN
+    detail: >-
+      Independent of the Shibboleth extensions, the same entity is a conforming SAML 2.0 Identity
+      Provider: it publishes an md:EntityDescriptor with an IDPSSODescriptor carrying HTTP-POST,
+      HTTP-Redirect and HTTP-POST-SimpleSign SingleSignOnService bindings and matching
+      SingleLogoutService bindings, signing and encryption KeyDescriptors, and SHA-256
+      alg:SigningMethod / alg:DigestMethod declarations. The entity is also registered in
+      eduGAIN, the global interfederation, through SIFULAN — the Malaysian Access Federation —
+      which is confirmed from eduGAIN's own technical database rather than from UPM's site.
+      sifulan.my itself is behind a Cloudflare bot challenge (HTTP 403 "Just a moment...") and
+      could not be read unattended, so the eduGAIN API is the citable source.
+    evidence:
+      - url: https://idf.upm.edu.my/idp/shibboleth
+        status: 200
+        locator: md:IDPSSODescriptor/md:SingleSignOnService
+        observed:
+          bindings:
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign
+            - urn:mace:shibboleth:1.0:profiles:AuthnRequest
+          signing_algorithm: http://www.w3.org/2001/04/xmldsig-more#rsa-sha256
+      - url: https://technical.edugain.org/api?action=list_entities&format=json
+        status: 200
+        locator: entities[] where entityid = https://idf.upm.edu.my/idp/shibboleth
+        observed:
+          edugain_entity_id: '672307'
+          registration_authority: https://sifulan.my
+          federation_code: SIFULAN
+          role: IDPSSODescriptor
+          scopes: upm.edu.my
+          display_name: Universiti Putra Malaysia
+          first_seen: '2020-06-19 16:35:11'
+      - url: https://sifulan.my/
+        status: 403
+        note: Cloudflare bot challenge, not a 404 — the federation site answers but is unreadable unattended.
+    confidence: high
+
+  - standard: crossref
+    status: evidenced
+    x-operator: registry
+    surface: Crossref member 27687, DOI prefix 10.47836
+    detail: >-
+      Universiti Putra Malaysia is a Crossref member in its own right, member id 27687, holding
+      DOI prefix 10.47836 and having registered 5,871 DOIs (3,105 current, 2,766 backfile). The
+      DOIs in that prefix resolve to UPM Press journals, including the Pertanika series and the
+      Journal of Language and Communication. This is a registry membership — a fact about UPM
+      recorded in someone else's registry — and Crossref's own contract is not saved under this
+      institution.
+    evidence:
+      - url: https://api.crossref.org/members?query=Putra+Malaysia
+        status: 200
+        locator: message.items[].id
+        observed:
+          member_id: 27687
+          primary_name: Universiti Putra Malaysia
+          prefixes: ['10.47836']
+          location: Serving, Selangor, Malaysia
+      - url: https://api.crossref.org/members/27687
+        status: 200
+        locator: message.counts
+        observed:
+          current_dois: 3105
+          backfile_dois: 2766
+          total_dois: 5871
+      - url: https://api.crossref.org/prefixes/10.47836/works?rows=3
+        status: 200
+        locator: message.items[].container-title
+        observed:
+          total_works: 5939
+          sample_containers:
+            - Pertanika Journal of Tropical Agricultural Science
+            - Journal of Language and Communication
+    confidence: high
+
+not_evidenced:
+  - standard: datacite
+    reason: no_evidence_found
+    detail: >-
+      No DataCite repository client or provider is registered to UPM. api.datacite.org/clients
+      returned zero results for "Putra" and the only Malaysian provider in the DataCite provider
+      list is Universiti Malaysia Sarawak. UPM's DOIs are Crossref DOIs under 10.47836, not
+      DataCite DOIs. Not claimed.
+  - standard: orcid
+    reason: no_evidence_found
+    detail: >-
+      No ORCID member registration, ORCID integration artifact, or ORCID-bearing field was found
+      on any UPM-operated surface. The EPrints creators structure exposes an optional `id` field
+      but the records inspected carry no ORCID iD in it. Not claimed.
+  - standard: scim
+    reason: no_evidence_found
+    detail: No public SCIM provisioning endpoint or documentation was found on any UPM host.
+  - standard: lti
+    reason: not_publicly_verifiable
+    detail: >-
+      UPM operates learning platforms (PutraBLAST / PutraMOOC) behind UPM-ID SSO. An LTI-capable
+      VLE is not a published LTI conformance artifact and is not claimed as one.
+  - standard: oneroster
+    reason: no_evidence_found
+  - standard: ed-fi
+    reason: no_evidence_found
+    detail: Ed-Fi is a US K-12 / state-agency data standard with no expected Malaysian HE application.
+  - standard: caliper
+    reason: no_evidence_found
+  - standard: qti
+    reason: no_evidence_found

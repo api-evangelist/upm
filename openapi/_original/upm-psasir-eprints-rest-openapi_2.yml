@@ -1,0 +1,188 @@
+# x-archived-from: upm-psasir-eprints-rest-openapi.yml
+# x-archived-on: 2026-09-16
+# DERIVED CONTRACT — Universiti Putra Malaysia does not publish an OpenAPI definition.
+# Written by API Evangelist from live, unauthenticated probes on 2026-09-01, plus the
+# OpenSearch description document the repository itself serves. `method: derived`.
+openapi: 3.1.0
+info:
+  title: UPM PSASIR — EPrints REST, export and OpenSearch interfaces
+  version: '3.3.16'
+  summary: Read-only machine-readable item, search and export interfaces of the UPM Institutional Repository.
+  description: >-
+    Beyond OAI-PMH, PSASIR (Universiti Putra Malaysia Institutional Repository, EPrints 3.3.16)
+    serves three further unauthenticated machine-readable interfaces, all observed live on
+    2026-09-01: an EPrints REST dataset browser at /rest/ exposing the eprint, user and subject
+    datasets with per-item XML at /rest/eprint/{id}.xml; a per-item export interface at
+    /cgi/export/eprint/{id}/{format}/{filename} that renders a single record into any installed
+    export plugin, including JSON; and a search interface at /cgi/search/simple whose output
+    format is selectable via the `output` parameter. The repository advertises twenty output
+    formats in its own OpenSearch 1.1 description document at /cgi/opensearchdescription —
+    Atom, BibTeX, CSV, ContextObject, DC, EndNote, HTML, Ids, JSON, METS, RDFN3, RDFNT, RDFXML,
+    RIS, RSS, RSS2, Refer, Text and XML. No authentication of any kind is required for reads.
+    Two operational cautions, both observed rather than assumed: /robots.txt disallows /cgi/ to
+    crawlers, and an unbounded /cgi/search JSON response streamed past 12 MB without completing
+    inside a 25-second budget, so bulk consumers should page or harvest via OAI-PMH instead.
+  contact:
+    name: PSASIR repository administrator
+    email: muizzudin@upm.edu.my
+    url: http://psasir.upm.edu.my/information.html
+  x-operator: institution
+  x-operator-basis: >-
+    Host is under upm.edu.my and resolves into UPMNET (119.40.117.86, org-name UNIVERSITI PUTRA
+    MALAYSIA). Self-hosted open-source EPrints, not a hosted vendor tenancy.
+  x-provenance:
+    generated: '2026-09-01'
+    method: derived
+    source: >-
+      Live probes on 2026-09-01 of http://psasir.upm.edu.my/rest/ (200), /rest/eprint/ (200,
+      9.9 MB index), /rest/eprint/813.xml (200), /cgi/export/eprint/813/JSON/psasir-eprint-813.js
+      (200, application/json), /cgi/search?q=rice&output=JSON (200, streaming) and
+      /cgi/opensearchdescription (200, application/opensearchdescription+xml), which is the
+      source of the enumerated output formats.
+servers:
+  - url: http://psasir.upm.edu.my
+    description: PSASIR (HTTP only — the host does not serve HTTPS)
+tags:
+  - name: REST
+    description: EPrints REST dataset browser.
+  - name: Export
+    description: Per-item export plugins.
+  - name: Search
+    description: Search with selectable output format.
+paths:
+  /rest/:
+    get:
+      tags: [REST]
+      operationId: listDatasets
+      summary: List the REST-exposed datasets
+      description: Returns an XHTML index of the datasets exposed over REST — eprint, user, subject.
+      responses:
+        '200':
+          description: XHTML dataset index.
+          content:
+            text/html:
+              schema: { type: string }
+  /rest/eprint/:
+    get:
+      tags: [REST]
+      operationId: listEprints
+      summary: List every eprint id in the repository
+      description: >-
+        Returns an XHTML index linking every archived eprint id and its `.xml` representation.
+        Observed at 9,899,179 bytes on 2026-09-01 — this is an unbounded listing with no paging
+        parameter; prefer OAI-PMH ListIdentifiers for incremental harvesting.
+      responses:
+        '200':
+          description: XHTML index of eprint ids.
+          content:
+            text/html:
+              schema: { type: string }
+  /rest/eprint/{eprintId}.xml:
+    get:
+      tags: [REST]
+      operationId: getEprintXml
+      summary: Get one eprint as EPrints XML
+      parameters:
+        - name: eprintId
+          in: path
+          required: true
+          schema: { type: integer, examples: [813] }
+      responses:
+        '200':
+          description: An `<eprints>` document in the http://eprints.org/ep2/data/2.0 namespace.
+          content:
+            text/xml:
+              schema: { type: string, contentMediaType: text/xml }
+              examples:
+                eprint813:
+                  summary: eprint 813 (observed 2026-09-01)
+                  externalValue: ../examples/upm-psasir-eprint-rest.xml
+  /cgi/export/eprint/{eprintId}/{format}/{filename}:
+    get:
+      tags: [Export]
+      operationId: exportEprint
+      summary: Export one eprint through a named export plugin
+      description: >-
+        Renders a single record through an installed EPrints export plugin. The `filename`
+        segment is cosmetic and is echoed as the download name.
+      parameters:
+        - name: eprintId
+          in: path
+          required: true
+          schema: { type: integer, examples: [813] }
+        - name: format
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [JSON, XML, DC, METS, RDFXML, RDFN3, RDFNT, BibTeX, RIS, EndNote, Refer, ContextObject, Text, HTML, Atom, CSV]
+        - name: filename
+          in: path
+          required: true
+          schema: { type: string, examples: [psasir-eprint-813.js] }
+      responses:
+        '200':
+          description: The record in the requested representation.
+          content:
+            application/json:
+              schema:
+                $ref: '../json-schema/upm-eprints-record-schema.json'
+              examples:
+                eprint813:
+                  summary: eprint 813 as JSON (observed 2026-09-01)
+                  externalValue: ../examples/upm-psasir-eprint-export.json
+  /cgi/search/simple:
+    get:
+      tags: [Search]
+      operationId: searchSimple
+      summary: Simple search with a selectable output representation
+      description: >-
+        Query the repository and choose the serialization with `output`. The available values are
+        those the repository advertises in its own OpenSearch description document.
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Free-text query.
+          schema: { type: string, examples: [rice] }
+        - name: search_offset
+          in: query
+          required: false
+          description: Zero-based result offset (OpenSearch indexOffset is 0).
+          schema: { type: integer, default: 0 }
+        - name: output
+          in: query
+          required: false
+          description: Output representation.
+          schema:
+            type: string
+            enum: [Atom, BibTeX, CSV, ContextObject, DC, EndNote, HTML, Ids, JSON, METS, RDFN3, RDFNT, RDFXML, RIS, RSS, RSS2, Refer, Text, XML]
+            default: HTML
+      responses:
+        '200':
+          description: >-
+            Search results in the requested representation. Responses are not paged by default
+            and can be very large; an `output=JSON` response was still streaming past 12 MB at
+            25 seconds on 2026-09-01.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../json-schema/upm-eprints-record-schema.json'
+            application/atom+xml:
+              schema: { type: string }
+  /cgi/opensearchdescription:
+    get:
+      tags: [Search]
+      operationId: getOpenSearchDescription
+      summary: Get the repository's OpenSearch 1.1 description document
+      description: >-
+        The repository's own machine-readable search descriptor. ShortName "Universiti Putra",
+        Contact muizzudin@upm.edu.my, twenty `Url` templates.
+      responses:
+        '200':
+          description: OpenSearch 1.1 description document.
+          content:
+            application/opensearchdescription+xml:
+              schema: { type: string }
